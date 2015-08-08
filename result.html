@@ -1,0 +1,154 @@
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>なかこー&どらごんず</title>
+<link rel="stylesheet" href="css/result.css">
+
+<!-- Google AJAX API の共通ライブラリを読み込む（APIキーは不要） -->
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
+<!-- Google Visualization API でデータを読み込む一連の処理 -->
+<script type="text/javascript">
+	var param;
+	
+	// Google Visualization API のライブラリを読み込む
+	google.load("visualization", "1");
+	
+	  // データソース URL
+	  var dataSource = 'http://spreadsheets.google.com/tq?key=0ArB497bL69tTdFlydkRQX1NrUUJMeTRuTk5rMk55YXc&gid=0&pub=1';
+	  
+	  // Query Language
+	  var queryLanguage = 'select A ,B ,C ,D ,E';
+	
+	  // ページ読み込みの完了後にデータをリクエスト
+	  google.setOnLoadCallback(function() {
+	    var query = new google.visualization.Query(dataSource);
+	    query.setQuery(queryLanguage);
+	    query.send(handleResponse);
+	  });
+	
+	  // データを取得できると、この関数が呼ばれる
+	  function handleResponse(response)
+	  {
+	  	var num = document.getElementById('num');
+	    var name = document.getElementById('name');
+	    var detail = document.getElementById('detail');
+	    if(response.isError()) {
+	      name.innerHTML = escapeHtml(response.getDetailedMessage());
+	      return;
+	    }
+	    
+	    var data = response.getDataTable();
+	    var html = [];
+	    
+	    /*
+	    for (var row = 0; row < data.getNumberOfRows(); row++)
+	    {
+	      var line = [];
+	      for (var col = 0; col < data.getNumberOfColumns(); col++)
+	        line.push(escapeHtml(data.getFormattedValue(row, col)));
+	      html.push('<tr><td>' + line.join("</td><td>") + '</td></tr>');
+	    }
+	    */
+	    
+	    for (var row = 0; row < data.getNumberOfRows(); row++)
+	    {
+	    	if(data.getFormattedValue(row, 1) == param["q"])
+	    	{
+	  	  		if(data.getFormattedValue(row, 2) == param["m"])
+	  			{
+	  			num.innerHTML = "No." + escapeHtml(data.getFormattedValue(row, 0));
+	  			name.innerHTML = escapeHtml(data.getFormattedValue(row, 3));
+	  			detail.innerHTML = escapeHtml(data.getFormattedValue(row, 4));
+	  			break;
+	  		    }
+	  		}
+	    }
+	    
+	    //el.innerHTML = '<table>' + html.join('') + '</table>';
+	  }
+	  
+	
+	  // HTML エスケープするヘルパー関数
+	  function escapeHtml(text) {
+	    return (text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\u0022/g, '&quot;');
+	  }
+	
+	//ここからパラメーターを取得
+	window.onload = function onLoad() {
+		pass();
+	    param = GetQueryString();
+	    target = document.getElementById("param");
+	    target.innerHTML = "<img src='../character/" + param["q"] + "-" + param["m"] +
+	    	".png' width='30%' >";
+	}
+	function pass(){
+		if(document.referrer != "http://blog.cha1ra.com/etc/nkk/prev/"){
+			//window.location.href = "http://blog.cha1ra.com/etc/nkk/error/";
+		}
+	}
+	
+	function GetQueryString() {
+	    if (1 < document.location.search.length) {
+	        // 最初の1文字 (?記号) を除いた文字列を取得する
+	        var query = document.location.search.substring(1);
+	        // クエリの区切り記号 (&) で文字列を配列に分割する
+	        var parameters = query.split('&');
+	        var result = new Object();
+	        for (var i = 0; i < parameters.length; i++) {
+	            // パラメータ名とパラメータ値に分割する
+	            var element = parameters[i].split('=');
+	            var paramName = decodeURIComponent(element[0]);
+	            var paramValue = decodeURIComponent(element[1]);
+	
+	            // パラメータ名をキーとして連想配列に追加する
+	            result[paramName] = decodeURIComponent(paramValue);
+	        }
+	        return result;
+	    }
+	    return null;
+	}
+</script>
+
+
+
+
+</head>
+
+<body>
+
+
+
+<!-- この DIV に取得したデータを表示する -->
+<!--<div id="result"></div><br />-->
+
+	<div class="menu">
+		<table>
+			<tr>
+				<td rowspan="2" width="20%"><a  href="index.html"><button>戻る</button></a></td>
+				<td width="80%"><div id="num"></div></td>
+			</tr>
+			<tr>
+				<td>
+						<div id="name"></div>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<br />
+    <div id="param" align="center"></div>
+    <div class="content">
+    	<div id="detail"></div>
+	</div>
+
+
+
+
+	<footer>
+		2014 koe11.net<br />
+		Nakako & Dragons Ver.1.0
+	</footer>
+
+
+
+</body>

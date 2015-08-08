@@ -1,0 +1,42 @@
+@charset "UTF-8"; 
+
+body {
+	background-color: #000;
+	color: #FFFFFF;
+	background-image:url(http://blog.cha1ra.com/etc/nkk/bg2.png);
+	background-repeat:no-repeat;
+	background-attachment:fixed;
+	background-position: center center;
+	background-size:80% auto;
+}
+
+.menu{
+	margin-top:15px;
+	background-color: #6E7A0B;
+	width:400px;
+}
+
+.content {
+	background-color: #755A51;
+	filter:alpha(opacity=85);
+    -moz-opacity:0.85;
+    -khtml-opacity: 0.85;
+    opacity:0.85;
+    width:70%;
+	margin-left : auto ; 
+	margin-right : auto ;
+	padding-bottom : 20px;
+	padding-bottom : 40px;
+}
+
+button{
+	margin-left:10px;
+	margin-right:20px;
+}
+
+
+footer{
+	text-align: center;
+	padding: 10px 0px 10px 0px;
+	border-top: 1px rgb(255,255,255) solid;
+}
